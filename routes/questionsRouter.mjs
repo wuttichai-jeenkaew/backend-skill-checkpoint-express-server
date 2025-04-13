@@ -224,31 +224,6 @@ questionsRouter.get("/:questionsId/answers", async (req, res) => {
   }
 });
 
-questionsRouter.get("/:questionsId/answers/:answerId", async (req, res) => {
-  const questionsId = req.params.questionsId;
-  const answerId = req.params.answerId;
-
-  try {
-    const result = await connectionPool.query(
-      "SELECT * FROM answers WHERE question_id = $1 AND id = $2",
-      [questionsId, answerId]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({
-        message: "Answer not found.",
-      });
-    }
-
-    return res.status(200).json(result.rows[0]);
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-      message: "Unable to fetch answer.",
-    });
-  }
-});
-
 questionsRouter.delete("/:questionsId/answers", async (req, res) => {
   const questionsId = req.params.questionsId;
 
